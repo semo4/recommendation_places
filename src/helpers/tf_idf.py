@@ -54,7 +54,7 @@ class TFIDFProcess:
         return data
 
     def get_recommended(self, df, data):
-        unqiue_palces = list()
+        unique_places = list()
         recommendations = list()
         places_indices = list()
         # user data
@@ -67,8 +67,8 @@ class TFIDFProcess:
 
         recommended_places = df.iloc[places_indices].to_dict(orient="records")
         for recommend_place in recommended_places:
-            if recommend_place["Name"] not in unqiue_palces:
-                unqiue_palces.append(recommend_place["Name"])
+            if recommend_place["Name"] not in unique_places:
+                unique_places.append(recommend_place["Name"])
                 data = dict()
                 data["Name"] = recommend_place["Name"]
                 data["Address"] = recommend_place["Address"]
