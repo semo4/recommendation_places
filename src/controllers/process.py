@@ -15,6 +15,7 @@ class ProcessData:
         # Loop over trip Id's
         for trip in trips:
             visit_places = list()
+            unique_visited_places = list()
             # Get Trip Data from FS
             trip_data = self.fs_client.get_trip_data(trip)
             # Extract Destination Id's from trip
@@ -24,17 +25,19 @@ class ProcessData:
                 # Extract visitedPlaces from Destinations
                 for place in destination_data["visitedPlaces"]:
                     visit_places.append(place)
-            trip_dict_res = self.Map_place(visit_places)
-            trip_dict[trip_data["name"]] = dict()
-            trip_dict[trip_data["name"]]["visited_places"] = trip_dict_res
-            # Get All destinations data from FS
-            destination_places = self.get_all_places()
-            # Send Destinations data and User Visited Places Data to build the new recommended places
-            # The Result will contains all recommended places for the User
-            recommend_result = TFIDFProcess().build_recommended_places(
-                destination_places, trip_dict_res
-            )
-            trip_dict[trip_data["name"]]["recommended_places"] = recommend_result
+                    unique_visited_places.append(place['name'])
+            if len(visit_places) > 0:
+                trip_dict[trip_data["name"]] = dict()
+                trip_dict_res = self.Map_place(visit_places)
+                trip_dict[trip_data["name"]]["visited_places"] = trip_dict_res
+                # Get All destinations data from FS
+                destination_places = self.get_all_places(unique_visited_places)
+                # Send Destinations data and User Visited Places Data to build the new recommended places
+                # The Result will contains all recommended places for the User
+                recommend_result = TFIDFProcess().build_recommended_places(
+                    destination_places, trip_dict_res
+                )
+                trip_dict[trip_data["name"]]["recommended_places"] = recommend_result
         return trip_dict
 
     def Map_place(self, places):
@@ -56,11 +59,12 @@ class ProcessData:
             places_data.append(place_dict)
         return places_data
 
-    def get_all_places(self):
+    def get_all_places(self, unique_visited_places):
         places_data = self.fs_client.get_destinations()
         visited_places = list()
         for desc in places_data:
             for visited in desc["visitedPlaces"]:
-                visited_places.append(visited)
+                if visited['name'] not in unique_visited_places:
+                    visited_places.append(visited)
         places_res = self.Map_place(visited_places)
         return places_res

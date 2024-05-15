@@ -72,7 +72,7 @@ class TFIDFProcess:
                 data = dict()
                 data["Name"] = recommend_place["Name"]
                 data["Address"] = recommend_place["Address"]
-                data["Type"] = recommend_place["Type"]
+                data["Type"] = recommend_place["Type"].split(',')
                 data["Rating"] = recommend_place["Rating"]
                 # data["Description"] = recommend_place["Description"]
                 data["Reviews"] = recommend_place["Reviews"]
