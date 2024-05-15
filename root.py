@@ -17,5 +17,5 @@ def get_recommended_places(user_id):
         return jsonify(res)
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
