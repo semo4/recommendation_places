@@ -25,9 +25,9 @@ class ProcessData:
                 # Extract visitedPlaces from Destinations
                 for place in destination_data["visitedPlaces"]:
                     visit_places.append(place)
-                    unique_visited_places.append(place['name'])
+                    unique_visited_places.append(place["name"])
+            trip_dict[trip_data["name"]] = dict()
             if len(visit_places) > 0:
-                trip_dict[trip_data["name"]] = dict()
                 trip_dict_res = self.Map_place(visit_places)
                 trip_dict[trip_data["name"]]["visited_places"] = trip_dict_res
                 # Get All destinations data from FS
@@ -38,6 +38,12 @@ class ProcessData:
                     destination_places, trip_dict_res
                 )
                 trip_dict[trip_data["name"]]["recommended_places"] = recommend_result
+            else:
+                empty_trip = dict()
+                empty_trip["message"] = (
+                    "This Trip doesn't contains any Recommended Places"
+                )
+                trip_dict[trip_data["name"]]["recommended_places"] = empty_trip
         return trip_dict
 
     def Map_place(self, places):
@@ -64,7 +70,7 @@ class ProcessData:
         visited_places = list()
         for desc in places_data:
             for visited in desc["visitedPlaces"]:
-                if visited['name'] not in unique_visited_places:
+                if visited["name"] not in unique_visited_places:
                     visited_places.append(visited)
         places_res = self.Map_place(visited_places)
         return places_res

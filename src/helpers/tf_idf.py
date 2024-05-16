@@ -21,15 +21,13 @@ class TFIDFProcess:
     def build_similarity(self, df, user_df):
         # FS DataFrame => Recommended Places
         df["TextData"] = (
-            df["Type"] + " " + df["Reviews"] + " " + df["Rating"].astype(str)
+            df["Type"] + " " + df["Reviews"]
         )
         #  User data => User selected trips
         user_df["TextData"] = (
             user_df["Type"]
             + " "
             + user_df["Reviews"]
-            + " "
-            + user_df["Rating"].astype(str)
         )
         # Create the TF-IDF vectorizer
         tfidf = TfidfVectorizer(stop_words="english", token_pattern=r"\b[a-zA-Z0-9]+\b")
@@ -77,6 +75,6 @@ class TFIDFProcess:
                 # data["Description"] = recommend_place["Description"]
                 data["Reviews"] = recommend_place["Reviews"]
                 recommendations.append(data)
-                if len(recommendations) >= 10:
+                if len(recommendations) >= 5:
                     break
         return recommendations
