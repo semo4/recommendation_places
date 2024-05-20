@@ -20,15 +20,9 @@ class TFIDFProcess:
 
     def build_similarity(self, df, user_df):
         # FS DataFrame => Recommended Places
-        df["TextData"] = (
-            df["Type"] + " " + df["Reviews"]
-        )
+        df["TextData"] = df["Type"] + " " + df["Reviews"]
         #  User data => User selected trips
-        user_df["TextData"] = (
-            user_df["Type"]
-            + " "
-            + user_df["Reviews"]
-        )
+        user_df["TextData"] = user_df["Type"] + " " + user_df["Reviews"]
         # Create the TF-IDF vectorizer
         tfidf = TfidfVectorizer(stop_words="english", token_pattern=r"\b[a-zA-Z0-9]+\b")
         # Compute the TF-IDF matrix
@@ -70,10 +64,18 @@ class TFIDFProcess:
                 data = dict()
                 data["Name"] = recommend_place["Name"]
                 data["Address"] = recommend_place["Address"]
-                data["Type"] = recommend_place["Type"].split(',')
+                data["Type"] = recommend_place["Type"].split(",")
                 data["Rating"] = recommend_place["Rating"]
                 # data["Description"] = recommend_place["Description"]
-                data["Reviews"] = recommend_place["Reviews"]
+                data["Reviews"] = recommend_place["Reviews"].split(",,")
+                data["Description"] = recommend_place["Description"]
+                data["PriceLevel"] = recommend_place["PriceLevel"]
+                data["VisitDate"] = recommend_place["VisitDate"]
+                data["pId"] = recommend_place["pId"]
+                data["lng"] = recommend_place["lng"]
+                data["isFav"] = recommend_place["isFav"]
+                data["lat"] = recommend_place["lat"]
+                data["imageUrls"] = recommend_place["imageUrls"].split(",,")
                 recommendations.append(data)
                 if len(recommendations) >= 5:
                     break

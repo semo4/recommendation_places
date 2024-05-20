@@ -29,13 +29,15 @@ class ProcessData:
             trip_dict[trip_data["name"]] = dict()
             if len(visit_places) > 0:
                 trip_dict_res = self.Map_place(visit_places)
-                trip_dict[trip_data["name"]]["visited_places"] = trip_dict_res
                 # Get All destinations data from FS
                 destination_places = self.get_all_places(unique_visited_places)
                 # Send Destinations data and User Visited Places Data to build the new recommended places
                 # The Result will contains all recommended places for the User
                 recommend_result = TFIDFProcess().build_recommended_places(
                     destination_places, trip_dict_res
+                )
+                trip_dict[trip_data["name"]]["visited_places"] = self.extract_data(
+                    trip_dict_res
                 )
                 trip_dict[trip_data["name"]]["recommended_places"] = recommend_result
             else:
@@ -51,17 +53,44 @@ class ProcessData:
         for place in places:
             place_dict = dict()
             place_dict["Name"] = place["name"]
-            place_dict["Rating"] = place["rating"] if place["rating"] else 0
-            # place_dict["Description"] = place["description"]
             place_dict["Address"] = place["address"]
             place_dict["Type"] = ",".join(place["types"])
+            place_dict["Rating"] = place["rating"] if place["rating"] else 0
             reviews_list = list()
             if "reviews" in place.keys() and place["reviews"] is not None:
                 for review in place["reviews"]:
                     reviews_list.append(review)
             place_dict["Reviews"] = (
-                ",".join(reviews_list) if len(reviews_list) > 0 else ""
+                ",,".join(reviews_list) if len(reviews_list) > 0 else ""
             )
+            place_dict["Description"] = place["description"]
+            place_dict["PriceLevel"] = place["priceLevel"]
+            place_dict["VisitDate"] = place["visitDate"]
+            place_dict["pId"] = place["pId"]
+            place_dict["lng"] = place["lng"]
+            place_dict["isFav"] = place["isFav"]
+            place_dict["lat"] = place["lat"]
+            place_dict["imageUrls"] = ",,".join(place["imageUrls"])
+            places_data.append(place_dict)
+        return places_data
+
+    def extract_data(self, places):
+        places_data = list()
+        for place in places:
+            place_dict = dict()
+            place_dict["Name"] = place["Name"]
+            place_dict["Address"] = place["Address"]
+            place_dict["Type"] = place["Type"].split(",")
+            place_dict["Rating"] = place["Rating"]
+            place_dict["Reviews"] = place["Reviews"].split(",,")
+            place_dict["Description"] = place["Description"]
+            place_dict["PriceLevel"] = place["PriceLevel"]
+            place_dict["VisitDate"] = place["VisitDate"]
+            place_dict["pId"] = place["pId"]
+            place_dict["lng"] = place["lng"]
+            place_dict["isFav"] = place["isFav"]
+            place_dict["lat"] = place["lat"]
+            place_dict["imageUrls"] = place["imageUrls"].split(",,")
             places_data.append(place_dict)
         return places_data
 
