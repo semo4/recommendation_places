@@ -2,6 +2,53 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+# TF-IDF (Term Frequency-Inverse Document Frequency)
+# We use this algorithm because this will help use to weights the terms such commons words.
+# It helps in search engine to ranking documents based on their relevance to the search query and for this reason we use it.
+# It provides a strong baseline performance for many text mining.
+# It will helps in reducing noise in the data.
+# Why we choose TF-IDF because Document Similarity (such as clustering similar documents or retrieving similar documents from the data you provided).
+
+# cosine_similarity
+# We will use it to measure the similarity in two vectors
+# Cosine Similarity range from -1 to 1
+#  1 => this mean the text identical
+#  0 => this mean the text orthogonal (no similarity).
+# -1 => this mean the text diametrically opposed (completely dissimilar)
+# It will generate array with all similarity result from the documents.
+
+# Why we use the cosine_similarity
+# It help to text analysis to measure similarity between documents.
+# Making it suitable for large dataset.
+# Build recommender system base on user preferences (in our system user visited places).
+# SO the cosine_similarity is a powerful tool to determining the similarity between documents.
+
+# TFIDFProcess CLass
+# This class will build the process to get the Recommended places from the Data and user Data.
+
+
+# build_recommended_places
+# This function will build the whole system for use and returns the response.
+# It will takes the places Data and user Data.
+# This will clean the data first.
+# Then will create new DataFrame from user data.
+# After this it will build the similarity from the places data and user data.
+# Finally build the recommended data from the similarity data that we build.
+
+# clean_data
+# It will clean the data from any duplicates data and any NaN values from the records.
+# This will returns new DataFrame with the clean data.
+
+# build_similarity
+# This will build the TextData from Type and Reviews to use it in similarity build.
+# Use TfidfVectorizer to defined the vectorizer.
+# Then use the tfidf to fit_transform the data.
+# Use transform to fit the user data using the same vocabulary from fit_transform.
+# Then will loop over the user data to build the similarity from all places data.
+# return the similarity array for each visited place in user data.
+
+# get_recommended
+# This function will help to map and build the recommended data from similarity result.
 
 class TFIDFProcess:
     def build_recommended_places(self, recommended_places, visited_places):

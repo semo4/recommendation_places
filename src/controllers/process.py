@@ -1,6 +1,25 @@
 from src.cloud.gcp import GCPCloud
 from src.helpers.tf_idf import TFIDFProcess
 
+# ProcessData
+# In this class we will get the data from FS and build the recommended
+
+# recommended_places
+# This function will takes the user id from the API and get the user data from FS.
+# Then get the trips that exist in user data.
+# Loop over the trips and get the Destinations for each trip.
+# Then get the visited places from Destinations and append it to unique list to ensure the places will be only unique.
+# Then will build the recommended places.
+
+# Map_place
+# This function will map the data from FS to new object that ca use in our system.
+
+# extract_data
+# Revert the data to same status that come from FS to return it as the user need.
+
+# get_all_places
+# Get all destinations from FS and map it to new object so we can use it to build our recommended places
+
 
 class ProcessData:
     def __init__(self):

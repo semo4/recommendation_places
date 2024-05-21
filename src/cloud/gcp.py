@@ -19,7 +19,27 @@ from src.utils.config import (
     UNIVERSE_DOMAIN,
 )
 
+# GCPCloud
+# In this class we will connect to FS
 
+# build_credential
+# this will take the config variables and build the credential to connect the FS
+
+
+# get_user_data
+# it takes the user_id and returns the user data from FS
+
+
+# get_trip_data
+# it takes the trip_id and returns the trip data from FS
+
+
+# get_destination_data
+# it takes the destination_id and returns the destination data from FS
+
+
+# get_destinations
+# it will returns the destinations data from FS
 class GCPCloud:
     def __init__(self):
         self.build_credential()
